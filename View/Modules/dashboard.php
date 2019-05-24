@@ -119,9 +119,9 @@
 								<!-- /.row -->
 							</div>
 							<!-- /.card-content -->
-						</div>
+</div>
                 
-                        <div class="box-content">
+            <div class="box-content">
 					<table id="example-edit" class="display" style="width: 100%">
 						<thead>
 							<tr>
@@ -602,4 +602,4 @@
 							</tr>
 						</tbody>
 					</table>
-				</div>
+			</div>

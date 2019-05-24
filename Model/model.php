@@ -21,6 +21,7 @@
             }
 
             else if($enlacesModel == "index"){//En caso de no tener nada lleva al inicio de sesion
+
                 $module = "View/Modules/dashboard.php";
             }else{
                 $module = "View/Modules/dashboard.php";
