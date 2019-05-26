@@ -239,16 +239,17 @@
                 }
               
                 if($r == $_POST["usuario"] && $c == $_POST["contrasena"]){
-                   // session_start();
+                    session_start();
                     
                     $_SESSION['validar'] = true;
-                    $_SESSION['vendedor'] = $v; 
+                    $_SESSION['usuario'] = $v; 
+                
                     $_SESSION['iduser'] = $idd;
 
-                    echo "Vendedor: ".$_SESSION["vendedor"];
+                    echo "Vendedor111111111111111111: ".$_SESSION["usuario"];
 
                     echo '<script type="text/javascript">
-                    window.location.replace("index.php?action=ventas");
+                    window.location.replace("index.php");
                   </script>';
                   //  header("location:index.php?action=ventas");
                 }
