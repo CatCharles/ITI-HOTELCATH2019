@@ -1,104 +1,62 @@
-<?php
-
-/*session_start();
-
-if(($_SESSION["validar"])==0){
-
-	header("location:index.php?action=index");
-
-	exit;
-}
-else{
-    
-}
-*/
-?>
-
 <header>
-		<h1>Ventas</h1>
+		<h1>Clientes</h1>
 </header>
-<div style="text-align:left;">
 <?php
-$bd = new Database();
-$hoy=date("Y/m/d");
-$res = $bd->select("select sum(total)as suma from tda_ventas where fecha ='$hoy';");
-foreach($res as $r){ $rr= $r["suma"];}
+///Se llama a la clase MVC para poder utilizar sus metodos.
+$clientes = new MvcController();
+//Se recibe lo obtenido en el controller que se encargo de llamar al modelo para recibir la consulta.
+$respuesta = $clientes->vistaUsuariosController();
+$res = "";//la variable res almacenara la cadena de datos obtenida con estructura de tabla.
 
+//se itera lo obtenido
+foreach($respuesta as $c){
+  $res.='<tr>     
+                    <td>'.$c["id_cliente"].'</td>
+                    <td>'.$c["nombre"].'</td>
+                    <td>'.$c["ap_paterno"].'</td>
+                    <td>'.$c["ap_materno"].'</td>
+                    <td>'.$c["telefono"].'</td>
+                    <td>'.$c["tipo"].'</td>   
+                                        
+                    </tr>';
+}
 ?>
-<label >Total vendido actual: </label>
-<label> $ <?php echo $rr;?> </label>
-</div>
-<div style="text-align: right;">
-<a href="index.php?action=agregar_venta"><input type="button" name="aceptar" class="frm-submit" value = "Agregar Venta"><i class="fa fa-arrow-circle-right" style="padding-left: 10px;"></i></a>
+<div class="box-content bordered primary">
+					<h4 class="box-title"><i class="ico glyphicon glyphicon-pencil"></i>Busquedas</h4>
+					<!-- /.box-title -->
+					
+					<!-- /.dropdown js__dropdown -->
+	<p>Busque el <strong>cliente que desee</strong>, se puede buscar por <strong>nombre, tipo y cualquier columna</strong> que desee encontrar.</p>
+				</div>
 
-</div>
-
-
-<div>
-  <!-- Tabla de muestreo de datos -->
-  <table class="table table-striped table-hover table-dark">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Vendedor</th>
-                        <th>Fecha</th>
-						<th>Total</th>
-						<th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php 
-                
-                        $vistaVenta = new MvcController();
-                        $vistaVenta -> vistaVentasController();
-
-                        if(isset($_GET["action"])){
-
-                            if($_GET["action"] == "fallo"){
-                        
-                                echo "Fallo al ingresar";
-                            
-                            }
-                        
-                        }
-                
-				?>                         
-                </tbody>
-            </table>
-</div>
-
-
-<div>
-  <!-- Tabla de muestreo de datos -->
-  <h1>Muestreo general</h1>
-
-  <table class="table table-striped table-hover table-dark">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-						<th>Total</th>
-						
-                    </tr>
-                </thead>
-                <tbody>
-                <?php 
-                
-                        $vistaVenta = new MvcController();
-                        $vistaVenta -> vistaVentasTicketController();
-
-                        if(isset($_GET["action"])){
-
-                            if($_GET["action"] == "fallo"){
-                        
-                                echo "Fallo al ingresar";
-                            
-                            }
-                        
-                        }
-                
-				?>                         
-                </tbody>
-            </table>
-</div>
+            <div class="box-content">
+					<table id="example-edit" class="display" style="width: 100%">
+						<thead>
+							<tr>
+								<th>id</th>
+								<th>Nombre</th>
+								<th>Ap. Paterno</th>
+								<th>Ap. Materno</th>
+								<th>Telefono</th>
+								<th>Tipo de cliente</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th>id</th>
+								<th>Nombre</th>
+								<th>Ap. Paterno</th>
+								<th>Ap. Materno</th>
+								<th>Telefono</th>
+								<th>Tipo de cliente</th>
+							</tr>
+						</tfoot>
+            <tbody>
+              <?php
+             //Se muestra la cadena de la estrucutra de la tabla con los datos ya almacenados
+                echo $res;?>
+             
+        
+						</tbody>
+					</table>
+			</div>

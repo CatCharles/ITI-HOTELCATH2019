@@ -4,7 +4,7 @@
         public function enlacesPaginasModel($enlacesModel){
             //Dependiendo a lo que contenga el parametro es a donde nos enviara a la vista.
             //Seccion de clientes
-            if($enlacesModel == "cliente" || $enlacesModel == "borrar_cliente" || $enlacesModel == "editar_cliente"  || $enlacesModel == "agregar_cliente") {
+            if($enlacesModel == "cliente" || $enlacesModel == "borrar_cliente" || $enlacesModel == "editar_cliente"  || $enlacesModel == "agregar_cliente" || $enlacesModel == "perfil" || $enlacesModel == "administrar_clientes") {
                 $module = "View/Modules/".$enlacesModel.".php";
             } 
             
@@ -15,7 +15,12 @@
             } 
 
             //seccion de reservas
-            else if($enlacesModel == "reservas" || $enlacesModel == "borrar_reserva" || $enlacesModel == "editar_reserva"  || $enlacesModel == "agregar_reserva") {
+            else if($enlacesModel == "administracion_reservas" || $enlacesModel == "borrar_reserva" || $enlacesModel == "editar_reserva"  || $enlacesModel == "agregar_reserva") {
+                $module = "View/Modules/".$enlacesModel.".php";
+
+            }
+          //seccion de salida
+            else if($enlacesModel == "salir") {
                 $module = "View/Modules/".$enlacesModel.".php";
 
             }

@@ -2,21 +2,14 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Tienda!</title>
+	<title>Hotel!</title>
 </head>
 <body>
-
-
-<header>
-		<h1>Hotel GoodAvenue</h1>
-</header>
-	
-	<?php
-	//include "Modules/navegacion.php";
-	?>
 	<section>
 		<?php 
+    //Se LLama a la clase MVC
 			$mvc = new MvcController();
+    //Para poder acceder al metodo que controla la localizacion actual.
 			$mvc->enlacesPaginasController();
 		 ?>
 

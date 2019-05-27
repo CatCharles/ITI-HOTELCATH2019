@@ -9,405 +9,378 @@
         //Interaccion con el usuario
         public function enlacesPaginasController(){
             //Viene del templete
+          //Se verifica el contenido del action desde la url
             if(isset($_GET["action"])){
+              //en caso de contener algo esto es almacenado para poder dirigirnos a el 
                 $enlacesController = $_GET["action"];
             }else{
+              //caso contrario nos redirige al index para una verificacion.
                 $enlacesController="index";
             }
+          //Ingresamos a la clase EnlacesPaginas y a su metdo que nos verifica a donde queremos ir
             $respuesta = EnlacesPaginas::enlacesPaginasModel($enlacesController);
-
+          //y lo que recibimos es el docuemtnto que se incluira en el actual.
             include $respuesta;
         }
 
-        //-------------------------------------VENTAS-----------------------------------------------
-        //Interaccion para mostrar las ventas
-        public function vistaVentasController(){
-            $respuesta = Datos::vistaVentasModel();
-            foreach($respuesta as $row => $i){
-                echo '<tr>
-               
-                    <td>'.$i["id"].'</td>
-                    <td>'.$i["vendedor"].'</td>
-                    <td>'.$i["fecha"].'</td>
-                    <td>'.$i["total"].'</td>
-                    <td>
-                    <a href="index.php?action=editar_venta&idEditar='.$i["id"].'" title="Editar" ><i class="glyphicon glyphicon-pencil" style="color:#5bc0de;padding-right: 30px;"></i></a>
-                    <a  href="index.php?action=borrar_venta&idBorrar='.$i["id"].'&idBorrarT='.$i["id_ticket"].'"  title="Eliminar" ><i  class="glyphicon glyphicon-remove" style="color:#e34724"></i></a>
-                     </td>
-                </tr>	';
-                 
-
-            }
-        }
-         //Interaccion para mostrar las ventas
-         public function vistaVentasTicketController(){
-            $respuesta = Datos::vistaVentasTicketModel();
-            foreach($respuesta as $row => $i){
-                echo '<tr>
-               
-                    <td>'.$i["id_ticket"].'</td>
-                    <td>'.$i["producto"].'</td>
-                    <td>'.$i["cantidad"].'</td>
-                    <td>'.$i["total"].'</td>
-                    
-                </tr>	';
-                 
-
-            }
-        }
-        //Interaccion para borrar una venta
-        public function borrarVentaController(){
-
-		if(isset($_GET["idBorrar"])){
-
-			$datosController = $_GET["idBorrar"];
-			$datoTicketController =$_GET["idBorrarT"];
-			$respuesta = Datos::borrarVentaModel($datosController, "tda_ventas","id_venta");
-            $res = Datos::borrarVentaModel($datoTicketController,"tda_ticket","id_ticket");
-			if($respuesta == "correcto"){
-
-				header("location:index.php?action=ventas");
-			
-			}
-
-        }
-        }
-
-         //Interaccion para agregar productos
-        public function agregarVentaController(){
-            if(isset($_POST["ptotal"])){
-
-                $datosTicketController = array( "idproducto"=>$_POST["producto"], 
-                "ptotal"=>$_POST["ptotal"], "cantidad"=>$_POST["cantidad"]);
-
-                $datosVentaController = array( "idusuario"=>$_POST["idusuarios"], 
-                "ptotal"=>$_POST["ptotal"], "fecha"=>$_POST["fecha_actual"]);
-
-                echo "idusuario: ". $datosVentaController['idusuario'];
-                echo "idusuari2o: ". $datosVentaController['fecha'];
-
-                $respuesta = Datos::ingregarVentasModel($datosTicketController,$datosVentaController);
-
-                if($respuesta == true){
-                    echo "TRUEEEE";
-                   // echo '<script type="text/javascript">
-                 //   window.location.replace("index.php?action=ventas");
-                 // </script>';
-                    // header("location:index.php?action=ventas");
-                    
-                }else{
-                    header("location:index.php?action=fallo");
-                }
-
-            }
-        }
-
-        //--------------------------------PRODUCTOS-----------------------------------------------------
-         //Interaccion para mostrar las ventas
-         public function vistaProductosController(){
-            $respuesta = Datos::vistaProductosModel();
-            foreach($respuesta as $row => $i){
-                echo '<tr>
-               
-                    <td>'.$i["id_producto"].'</td>
-                    <td>'.$i["nombre"].'</td>
-                    <td>'.$i["precio"].'</td>
-                    <td>
-                    <a href="index.php?action=editar_producto&idEditar='.$i["id_producto"].'" title="Editar" ><i class="glyphicon glyphicon-pencil" style="color:#5bc0de;padding-right: 30px;"></i></a>
-                    <a  href="index.php?action=borrar_producto&idBorrar='.$i["id_producto"].'"  title="Eliminar" ><i  class="glyphicon glyphicon-remove" style="color:#e34724"></i></a>
-                     </td>
-                    
-                </tr>	';
-                 
-
-            }
-        }
-        //Agregar producto
-        public function agregarProductoController(){
-            if(isset($_POST["aceptar"])){
-                $datosController = array( "nombre"=>$_POST["nombre"], 
-                                            "precio"=>$_POST["precio"]
-                );
-
-                $respuesta = Datos::agregarProductosModel($datosController);
-
-                if($respuesta == true){
-                    header("location:index.php?action=productos");
-                    
-                }else{
-                    header("location:index.php?action=agregar_producto");
-                }
-            }
-        }
-
-        //Editar producto
-        public function editarProductoController(){
-            
-            $datosController = $_GET["idEditar"];
-            $respuesta = Datos::editarProductoModel($datosController);
-
-            
-            foreach($respuesta as $it){
-    
-                
-                echo '<div class="inside" style="float:left;">
-
-                <div style="padding-top: 15px;">
-                <label>Nombre: </label>
-                <input type="text" name="nombre" id="nombre" placeholder="Nombre" value="'.$it["nombre"].'" class="frm-inp" required>
-                </div>
-                 
-                           
-                <div style="text-align:center;padding-top: 15px;">
-                <button type="submit" name="aceptar" class="frm-submit">Terminar<i class="fa fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
-                </div>
-    
-               
-    </div>
-    <div  style="float:right;">
-    
-    
-                <div style="padding-top: 15px;">
-                <label>Precio: </label>
-                <input type="number"  id="precio" name="precio" value="'.$it["precio"].'" class="frm-inp" >
-                </div>
-    
-    </div>';
-                echo'<input type="hidden" value="'.$it["id_producto"].'" name="idEditar">';
-                }
-    
-
-        }
-         //Actualizar producto
-         public function actualizarProductoController(){
-
-            if(isset($_POST["aceptar"])){
-    
-                $datosController = array( "nombre"=>$_POST["nombre"], 
-                                            "precio"=>$_POST["precio"],
-                                            "id_producto"=>$_POST["idEditar"]
-                                            
-                );
-                
-                $respuesta = Datos::actualizarProductoModel($datosController);
-    
-                if($respuesta){
-    
-                    echo "<h3>Se actualizo Correctamente</h3>";
-    
-                }
-    
-                else{
-    
-                    echo "error";
-    
-                }
-    
-            }
-        
-        }
-
-        //Borrar producto
-        public function borrarProductoController(){
-            if(isset($_GET["idBorrar"])){
-    
-                $datosController = $_GET["idBorrar"];
-               
-                $respuesta = Datos::borrarProductoModel($datosController, "tda_productos");
-                
-                if($respuesta == "correcto"){
-    
-                    header("location:index.php?action=productos");
-                
-                }
-    
-            }
-        }
-        //--------------------------------USUARIOS-----------------------------------------------------
+         //--------------------------------USUARIO ADMINISTRADOR--------------------------------------
         public function ingresaUsuarioController(){
-            if(isset($_POST["usuario"])){
+          //se verifica si se han ingresado datos
+            if(isset($_POST["contrasena"])){
+              //se colocan en un arreglo asociativo
                 $datosController = array( "email"=>$_POST["usuario"], 
 								        "contrasena"=>$_POST["contrasena"]);
-            
-        
-                $respuesta = Datos::ingresaUsuarioModel($datosController,"tda_usuarios");
+                //Se manda hacia la clase DATOS donde se verificaran solicitaran los datos ingresados        
+                $respuesta = Datos::ingresaUsuarioModel($datosController,"administradores");
+              //Regresando con la informacion, se almacenan las coincidencias
                 foreach($respuesta as $row => $i){
                     $r=$i["email"];
                     $c=$i["contrasena"];
                     $v=$i["nombre"];
-                    $idd=$i["id_usuario"];
+                    $idd=$i["id_admin"];
                 }
-              
+              //Se verifican las coincidencias encontradas
                 if($r == $_POST["usuario"] && $c == $_POST["contrasena"]){
-                    session_start();
-                    
-                    $_SESSION['validar'] = true;
+                    session_start(); //Se inicia una sesion para almacenar
+                    //Se guarda el nombre del usuario ingresado
                     $_SESSION['usuario'] = $v; 
-                
+                    //Asi como si identificador
                     $_SESSION['iduser'] = $idd;
-
-                    echo "Vendedor111111111111111111: ".$_SESSION["usuario"];
-
+                    //Una vez echo esto nos redirecciona al index donde nos envia a la pagina dashboard del sistema
                     echo '<script type="text/javascript">
                     window.location.replace("index.php");
                   </script>';
-                  //  header("location:index.php?action=ventas");
                 }
                 else{
                     header("location:index.php?action=fallo");
                 }
             }
         }
-
+         //--------------------------------USUARIO CLIENTES--------------------------------------
         //Se agregan nuevos usuario a la base de datos.
         public function agregarUsuarioController(){
-            if(isset($_POST["contrasena"])){
-                $datosController = array( "usuario"=>$_POST["usuario"], 
-                                            "contrasena"=>$_POST["contrasena"],
-                                            "email"=>$_POST["email"],
+          //se verifica que el ultimo elemento de la lista contenga algo 
+            if(isset($_POST["tipo_cliente"]) && $_POST["tipo_cliente"] != ""){
+              //Se almacena la informacion en un arreglo asociativo
+                $datosController = array(   "tipo_cliente"=>$_POST["tipo_cliente"],
+                                            "telefono"=>$_POST["telefono"],
                                             "nombre"=>$_POST["nombre"],
-                                            "ap_paterno"=>$_POST["apPaterno"],
-                                            "ap_materno"=>$_POST["apMaterno"]
+                                            "ap_paterno"=>$_POST["ap_paterno"],
+                                            "ap_materno"=>$_POST["ap_materno"]
                 );
-
-                $respuesta = Datos::agregarUsuariosModel($datosController,$tabla);
+                //Se habla a la clase DATOS para poder enviarle la peticion de agregar un nuevo registro, enviandole el arreglo y la tabla.
+                $respuesta = Datos::agregarUsuariosModel($datosController,"clientes");
 
                 if($respuesta == true){
-                    header("location:index.php?action=inicio");
+                  //En caso positivo nos redirecciona al cliente.
+                    echo '<script>		
+			              location.href= "index.php?action=cliente";
+		                </script>';
                     
                 }else{
-                    header("location:index.php?action=agregar_usuario");
+                  //En caso negativo nos deja en la misma ventana.
+                  echo '<div class="alert alert-warning" role="alert"> <strong>Error!</strong> Revise el contenido que desea agregar. </div>';/*
+                    echo '<script>		
+			              location.href= "index.php?action=agregar_cliente";
+		                 </script>';*/
                 }
             }
         }
 
         //Interaccion para mostrar los usuarios
         public function vistaUsuariosController(){
+          //Se envia la consulta al model para que regrese la informacion
             $respuesta = Datos::vistaUsuariosModel();
-            foreach($respuesta as $row => $i){
-                echo '<tr>
-               
-                    <td>'.$i["id_usuario"].'</td>
-                    <td>'.$i["nombre"].'</td>
-                    <td>'.$i["ap_paterno"].'</td>
-                    <td>'.$i["ap_materno"].'</td>
-                    <td>'.$i["email"].'</td>
-                    <td>
-                    <a href="index.php?action=editar_usuario&idEditar='.$i["id_usuario"].'" title="Editar" ><i class="glyphicon glyphicon-pencil" style="color:#5bc0de;padding-right: 30px;"></i></a>
-                    <a  href="index.php?action=borrar_usuario&idBorrar='.$i["id_usuario"].'"  title="Eliminar" ><i  class="glyphicon glyphicon-remove" style="color:#e34724"></i></a>
-                     </td>
-                </tr>	';
-                 
-
-            }
-        }
-
-        //Interaccion para borrar un usuario
-        public function borrarUsuarioController(){
-
-            if(isset($_GET["idBorrar"])){
-    
-                $datosController = $_GET["idBorrar"];
-               
-                $respuesta = Datos::borrarUsuarioModel($datosController, "tda_usuarios");
-                
-                if($respuesta == "correcto"){
-    
-                    header("location:index.php?action=usuarios");
-                
-                }
-    
-            }
+          //y esta es enviada a la vista para ser procesada y mostrada.
+          return $respuesta;
         }
 
         //Editar un usuario
         public function editarUsuarioController(){
-
-            $datosController = $_GET["idEditar"];
+          //Se obtiene el id del cliente que se quiere modificar  
+          $datosController = $_GET["idEditar"];
+          //este se es enviado al modelo ddonde nos regresara la consutla ordenada
             $respuesta = Datos::editarUsuarioModel($datosController);
-
-            foreach($respuesta as $it){
-    
-            echo '<div class="inside" style="float:left;">
-
-
-            <div style="padding-top: 15px;">
-            <label>Nombre: </label>
-			<input type="text" name="nombre" id="nombre" placeholder="Nombre" value="'.$it["nombre"].'" class="frm-inp" required>
-			</div>
-
-            <div style="padding-top: 15px;">
-            <label>Apellido materno: </label>
-			<input type="text" name="apMaterno" id="apMaterno" placeholder="Apellido Materno" value="'.$it["ap_materno"].'" class="frm-inp" required>
-			</div>
-
-            <div style="padding-top: 15px;">
-            <label>Email: </label>
-			<input type="email" name="email" id="email" placeholder="Ingrese su correo" value="'.$it["email"].'" class="frm-inp" required>
-			</div>        
-           
-            <div style="text-align:center;padding-top: 15px;">
-            <button type="submit" name="aceptar" class="frm-submit">Terminar<i class="fa fa-arrow-circle-right" style="padding-left: 10px;"></i></button>
-            </div>
-
-           
-</div>
-<div  style="float:right;">
-
-            <div style="padding-top: 15px;">
-            <label>Apellido paterno: </label>
-			<input type="text" name="apPaterno" id="apPaterno" placeholder="Apellido Paterno" value="'.$it["ap_paterno"].'" class="frm-inp" required >
-			</div>
-
-            <div style="padding-top: 15px;">
-            <label>Nombre de usuario: </label>
-			<input type="text" name="usuario" id="usuario" placeholder="Nombre de usuario" value="'.$it["usuario"].'" class="frm-inp" required>
-			</div>
-
-            <div style="padding-top: 15px;">
-            <label>Contraseña: </label>
-			<input type="text" name="contrasena" id="contrasena" placeholder="Contraseña" value="'.$it["contrasena"].'" class="frm-inp" required>
-			</div>
-
-			
-
-</div>';
-            echo'<input type="hidden" value="'.$it["id_usuario"].'" name="idEditar">';
-            }
-    
+          //Y esta es enviada de regreso y pueda ser mostrada en la vista.
+            return $respuesta;    
         }
 
         //Actualizar usuario
         public function actualizarUsuarioController(){
-
+          //Se verifica el contenido
             if(isset($_POST["aceptar"])){
-    
+              //este se amacena en un array asociativo
                 $datosController = array( "usuario"=>$_POST["usuario"], 
-                                            "contrasena"=>$_POST["contrasena"],
-                                            "email"=>$_POST["email"],
+                                            "id_tipo_cliente"=>$_POST["tipo_cliente"],
+                                            "telefono"=>$_POST["telefono"],
                                             "nombre"=>$_POST["nombre"],
-                                            "ap_paterno"=>$_POST["apPaterno"],
-                                            "ap_materno"=>$_POST["apMaterno"],
-                                            "id_usuario"=>$_POST["idEditar"]
+                                            "ap_paterno"=>$_POST["ap_paterno"],
+                                            "ap_materno"=>$_POST["ap_materno"],
+                                            "id_cliente"=>$_POST["idEditar"]
                 );
-                
+                //el array es enviado al modelo para ser procesado y envie la consulta a la base de datos, y simplemente recibir una resppuesta.
                 $respuesta = Datos::actualizarUsuarioModel($datosController);
     
                 if($respuesta){
-    
-                    echo "<h3>Se actualizo Correctamente</h3>";
-    
+                  //en caso de ser exitoso se redireccionara a la pagina anterior
+                  echo '<script>		
+			              location.href= "index.php?action=administrar_clientes";
+		                </script>';
+                  //se mostrara un menaje de exitoso
+                    echo '<div class="alert alert-success" role="success"> <strong>Exito!</strong> Se ha modificado correctamente. </div>';
                 }
-    
+              //En caso de existir algun error se notificara.
                 else{
-    
-                    echo "error";
+                    echo '<div class="alert alert-warning" role="alert"> <strong>Error!</strong> Revise el contenido que desea agregar. </div>';
     
                 }
     
             }
         
         }
+  
+        //Interaccion para borrar un usuario
+        public function borrarUsuarioController(){
+            //Se obtiene el id que se quiere eliminar y se verifica
+            if(isset($_GET["idBorrar"])){
+                //Al tenerlo este se pasa a una variable
+                $datosController = $_GET["idBorrar"];
+               //Es enviado hacia el modelo para realizar la conexion y este lo elimine
+                $respuesta = Datos::borrarUsuarioModel($datosController, "clientes");
+                
+                if($respuesta == "correcto"){
+                  //Al ser correcto se recarga la pagina anterior para verificar el cambio.
+                    echo '<script>		
+			              location.href= "index.php?action=administrar_clientes";
+		                </script>';
+                
+                }
+                    
+            }
+        }
+ 
+      //--------------------------------HABITACIONES--------------------------------------
+        //Se agregan nuevas habitaciones a la base de datos.
+        public function agregarHabitacionController(){
+          //se verifica que el ultimo elemento de la lista contenga algo 
+            if(isset($_POST["aceptar1"])){
+                $ruta="View/Modules/images/";//ruta carpeta donde queremos copiar las imágenes
+                $uploadfile_temporal=$_FILES["imagen"]["tmp_name"];//se guarda la ruta interna
+                $uploadfile_nombre=$ruta.$_FILES["imagen"]["name"];//se guarda la ruta a que se va a dirigir
+                if (is_uploaded_file($uploadfile_temporal))//se carga a la ruta interna
+                {
+                  move_uploaded_file($uploadfile_temporal,$uploadfile_nombre);//se mueve a la carpeta que decidimos destinar.
+                  //Se almacena la informacion en un arreglo asociativo
+                  $datosController = array(   "tipo_hab"=>$_POST["tipo_hab"],
+                                              "file_name"=>$uploadfile_nombre                 
+                   );
+                //Se habla a la clase DATOS para poder enviarle la peticion de agregar un nuevo registro, enviandole el arreglo y la tabla.
+                $respuesta = Datos::agregarHabitacionModel($datosController,"habitaciones");
+
+                }
+                           
+                if($respuesta == true){
+                  //En caso positivo nos redirecciona al cliente.
+                   echo '<script>		
+			              location.href= "index.php?action=habitacion";
+		                </script>';
+                    
+                }else{
+                  //En caso negativo nos deja en la misma ventana.
+                  echo '<div class="alert alert-warning" role="alert"> <strong>Error!</strong> Revise el contenido que desea agregar. </div>';
+
+                }
+            }//finisset
+        }//fin funcion
+       //*************************
+			//Interaccion para mostrar las habitaciones
+        public function vistaHabitacionesController(){
+          //Se envia la consulta al model para que regrese la informacion
+            $respuesta = Datos::vistaHabitacionesModel();
+          //y esta es enviada a la vista para ser procesada y mostrada.
+          return $respuesta;
+        }
+      
+				//Editar una habitacion
+        public function editarHabitacionController(){
+          //Se obtiene el id del cliente que se quiere modificar  
+          $datosController = $_GET["idEditar"];
+          //este se es enviado al modelo ddonde nos regresara la consutla ordenada
+            $respuesta = Datos::editarHabitacionModel($datosController);
+          //Y esta es enviada de regreso y pueda ser mostrada en la vista.
+            return $respuesta;    
+        }
+
+			  //Actualizar habitacion
+        public function actualizarHabitacionController(){
+          //Se verifica el contenido
+					
+            if(isset($_POST["tipo_hab"])){
+							if(isset($_POST["imagen"])){
+								$ruta="View/Modules/images/";//ruta carpeta donde queremos copiar las imágenes				
+								$uploadfile_temporal=$_FILES["imagen"]["tmp_name"];//se guarda la ruta interna
+								 $uploadfile_nombre=$ruta.$_FILES["imagen"]["name"];//se guarda la ruta a que se va a dirigir
+								if (is_uploaded_file($uploadfile_temporal))//se carga a la ruta interna
+                {
+                  move_uploaded_file($uploadfile_temporal,$uploadfile_nombre);//se mueve a la carpeta que decidimos destinar.
+                  //Se almacena la informacion en un arreglo asociativo
+                  $datosController = array(   "tipo_hab"=>$_POST["tipo_hab"],
+                                              "file_name"=>$uploadfile_nombre,
+																					 		"id_habitacion"=>$id_hab
+                   );
+               
+								}
+							}else{
+								$datosController = array(   "tipo_hab"=>$_POST["tipo_hab"],
+                                              "file_name"=>$_POST["antes"],
+																					 		"id_habitacion"=>$id_hab
+                   );
+							}
+							 //el array es enviado al modelo para ser procesado y envie la consulta a la base de datos, y simplemente recibir una resppuesta.
+                $respuesta = Datos::actualizarHabitacionModel($datosController);
+							
+							
+							if($respuesta == true){
+                  //En caso positivo nos redirecciona al cliente.
+                   echo '<script>		
+			              location.href= "index.php?action=habitacion";
+		                </script>';
+                    
+                }else{
+                  //En caso negativo nos deja en la misma ventana.
+                  echo '<div class="alert alert-warning" role="alert"> <strong>Error!</strong> Revise el contenido que desea agregar. </div>';
+
+                }
+						}
+
+       }//fin funcion
+
+			//Interaccion para borrar una habitacion
+        public function borrarHabitacionController(){
+            //Se obtiene el id que se quiere eliminar y se verifica
+            if(isset($_GET["idBorrar"])){
+                //Al tenerlo este se pasa a una variable
+                $datosController = $_GET["idBorrar"];
+               //Es enviado hacia el modelo para realizar la conexion y este lo elimine
+                $respuesta = Datos::borrarHabitacionModel($datosController, "habitaciones");
+                
+                if($respuesta == "correcto"){
+                  //Al ser correcto se recarga la pagina anterior para verificar el cambio.
+                    echo '<script>		
+			              location.href= "index.php?action=habitacion";
+		                </script>';
+                
+                }
+                    
+            }
+        }
+ 
+			//**************************
+			
+   //--------------------------------RESERVAS--------------------------------------
+        //Se agregan nueva reserva a la base de datos.
+        public function agregarReservaController(){
+          //se verifica que el ultimo elemento de la lista contenga algo 
+            if(isset($_POST["avanza"])){
+							
+              //Se almacena la informacion en un arreglo asociativo
+                $datosController = array(   "id_habitacion"=>$_POST["ophabitacion"],
+                                            "id_cliente"=>$_POST["opcliente"],
+                                            "fecha_entrada"=>$_POST["start"],
+                                            "fecha_salida"=>$_POST["end"]
+                );
+                //Se habla a la clase DATOS para poder enviarle la peticion de agregar un nuevo registro, enviandole el arreglo y la tabla.
+                $respuesta = Datos::agregarReservaModel($datosController,"reservaciones");
+
+                if($respuesta == true){
+                  //En caso positivo nos redirecciona al cliente.
+									echo $respuesta;
+                    echo '<script>		
+			              location.href= "index.php?action=administracion_reservas";
+		                </script>';
+                    
+                }else{
+                  //En caso negativo nos deja en la misma ventana.
+                  echo '<div class="alert alert-warning" role="alert"> <strong>Error!</strong> Revise el contenido que desea agregar. </div>';/*
+                    echo '<script>		
+			              location.href= "index.php?action=agregar_cliente";
+		                 </script>';*/
+                }
+            }
+        }
+		    
+			//Interaccion para mostrar las reservas
+        public function vistaReservasController(){
+          //Se envia la consulta al model para que regrese la informacion
+            $respuesta = Datos::vistaReservasModel();
+          //y esta es enviada a la vista para ser procesada y mostrada.
+          return $respuesta;
+        }
+			
+   //Editar un reserva
+        public function editarReservaController(){
+          //Se obtiene el id del cliente que se quiere modificar  
+          $datosController = $_GET["idEditar"];
+          //este se es enviado al modelo ddonde nos regresara la consutla ordenada
+            $respuesta = Datos::editarReservaModel($datosController);
+          //Y esta es enviada de regreso y pueda ser mostrada en la vista.
+            return $respuesta;    
+        }
+			
+			//Actualizar una reserva
+        public function actualizarReservaController(){
+          //Se verifica el contenido
+            if(isset($_POST["avanza"])){
+              //Se almacena la informacion en un arreglo asociativo
+                $datosController = array(   "id_habitacion"=>$_POST["ophabitacion"],
+                                            "id_cliente"=>$_POST["opcliente"],
+                                            "fecha_entrada"=>$_POST["start"],
+                                            "fecha_salida"=>$_POST["end"],
+																				 		"id"=>$_POST["iddd"],
+																				    "fina"=>$_POST["fina"]
+																				 		
+                );
+                //el array es enviado al modelo para ser procesado y envie la consulta a la base de datos, y simplemente recibir una resppuesta.
+                $respuesta = Datos::actualizarReservaModel($datosController);
+    
+                if($respuesta){
+                  //en caso de ser exitoso se redireccionara a la pagina anterior
+                  echo '<script>		
+			              location.href= "index.php?action=administracion_reservas";
+		                </script>';
+                  //se mostrara un menaje de exitoso
+                    echo '<div class="alert alert-success" role="success"> <strong>Exito!</strong> Se ha modificado correctamente. </div>';
+                }
+              //En caso de existir algun error se notificara.
+                else{
+                    echo '<div class="alert alert-warning" role="alert"> <strong>Error!</strong> Revise el contenido que desea agregar. </div>';
+    
+                }
+    
+            }
         
+        }
+		
+        //Interaccion para borrar una reservva
+        public function borrarReservaController(){
+            //Se obtiene el id que se quiere eliminar y se verifica
+            if(isset($_GET["idBorrar"])){
+                //Al tenerlo este se pasa a una variable
+								$u= $_GET["idhab"];
+                $datosController = $_GET["idBorrar"];
+               //Es enviado hacia el modelo para realizar la conexion y este lo elimine
+                $respuesta = Datos::borrarReservaModel($datosController,$u, "reservaciones");
+                
+                if($respuesta == "correcto"){
+                  //Al ser correcto se recarga la pagina anterior para verificar el cambio.
+                    echo '<script>		
+			              location.href= "index.php?action=administracion_reservas";
+		                </script>';
+                
+                }
+                    
+            }
+        }
+ 
     }
 ?>

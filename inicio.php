@@ -34,7 +34,7 @@
 				<!-- /.pull-right -->
 			</div>
 			<!-- /.clearfix -->
-			<button type="submit" class="frm-submit">Iniciar sesión<i class="fa fa-arrow-circle-right"></i></button>
+			<button type="submit" name="dale" id="dale" class="frm-submit">Iniciar sesión<i class="fa fa-arrow-circle-right"></i></button>
 			
 			<!-- /.row -->
 			
@@ -64,8 +64,11 @@
 </body>
 </html>
 <?php
+//Se cargan los archivos MVC 
 include_once "Controller/controller.php";
 include_once "Model/crud.php";
+//Se llama a la clase MVC
 $ingresa = new MvcController();
+//Se solicita la verificacion del usuario recien ingresado.
 $ingresa ->ingresaUsuarioController();
 ?>

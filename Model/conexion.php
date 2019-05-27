@@ -4,13 +4,13 @@
 class Database{
 
 	// Cadena de conexión.
-	private $dsn = 'mysql:dbname=upv;host=localhost';
+	private $dsn = 'mysql:dbname=hotel;host=localhost';
 
 	// Usuario.
-	private $user = 'root';
+	private $user = 'admin';
 
 	// Contraseña.
-	private $password = 'secret';
+	private $password = '532c384b63d09c8347fed042d9f107ce6eae8d1af9759aa8';
 
 	// Variables que trabajaran con las consultas y resultados de la conexión.
 	private $pdo = ""; // Guarda la conexión.
@@ -47,7 +47,7 @@ class Database{
 
 	// Actualizar registros en la base de datos.
 	public function update($sql){		
-		echo "sql: " .$sql;
+		//echo "sql: " .$sql;
 		try{
 			$stmt = "";
 			$stmt = $this->pdo->prepare($sql);
@@ -63,7 +63,7 @@ class Database{
 
 	// Insertar registros en la base de datos.
 	public function insert($sql){	
-		//echo $sql.'<br>';
+	//	echo $sql.'<br>';
 		try{
 			$stmt = "";
 			$stmt = $this->pdo->prepare($sql); // Se prepara la consulta.
@@ -79,7 +79,7 @@ class Database{
 
 	// Borrar registros de la base de datos.
 	public function delete($sql){	
-		echo $sql.'<br>';
+	//	echo $sql.'<br>';
 		try{
 			$stmt = "";
 			$stmt = $this->pdo->prepare($sql); // Se prepara la consulta.

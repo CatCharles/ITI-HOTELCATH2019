@@ -1,12 +1,13 @@
 <?php
 
 session_start();
-$_SESSION["validar"] = false;
+$_SESSION["usuario"] = "";
 $_SESSION=array();
 session_destroy();
 session_unset();
-
-header("location:index.php?action=inicio");
+ echo '<script>		
+			              location.href= "index.php?action=index";
+		                </script>';
 
 ?>
 
