@@ -9,6 +9,7 @@ TECNOLOGIAS Y APLICACIONES WEB 2019.
 session_start();
 //se verifica si la variable de sesion usuario existe para poder acceder o en su defecto esta lo enviara al archivo
 //inicio.php donde se encuentra el inicio de sesion.
+
 if (!isset($_SESSION['usuario'])) {
    header('Location: inicio.php');
     exit;

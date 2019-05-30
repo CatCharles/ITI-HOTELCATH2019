@@ -368,12 +368,13 @@
                 //Al tenerlo este se pasa a una variable
 								$u= $_GET["idhab"];
                 $datosController = $_GET["idBorrar"];
+
                //Es enviado hacia el modelo para realizar la conexion y este lo elimine
                 $respuesta = Datos::borrarReservaModel($datosController,$u, "reservaciones");
                 
                 if($respuesta == "correcto"){
                   //Al ser correcto se recarga la pagina anterior para verificar el cambio.
-                    echo '<script>		
+                   echo '<script>		
 			              location.href= "index.php?action=administracion_reservas";
 		                </script>';
                 

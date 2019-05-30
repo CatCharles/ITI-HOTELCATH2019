@@ -24,6 +24,8 @@ foreach($respuesta as $c){
                     </tr>';
 }
 ?>
+<form method="post">
+	
 <div class="box-content bordered primary">
 					<h4 class="box-title"><i class="ico glyphicon glyphicon-pencil"></i>Ediciones</h4>
 					<!-- /.box-title -->
@@ -63,3 +65,4 @@ foreach($respuesta as $c){
 						</tbody>
 					</table>
 			</div>
+	</form>

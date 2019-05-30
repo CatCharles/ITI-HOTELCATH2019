@@ -35,7 +35,7 @@ foreach($val as $v){
 	<div class="box-content" style="float:right;">
 					<h4 class="box-title">Seleccione un mes del año</h4>
 
-<input type="month" name="mes" value="2019-05" class="box-content" onchange=avanza();>
+<input type="month" name="mes" value="2019-05" class="box-content" >
 					<!-- /.box-title -->
 	<button type="button" name="calcula" class="btn btn-primary waves-effect waves-light">Calcular</button>
 				
@@ -43,8 +43,4 @@ foreach($val as $v){
 					<!-- /.content -->
 				</div>
 </div>
-<script>
-function avanza(){
-	
-}
-</script>
+
